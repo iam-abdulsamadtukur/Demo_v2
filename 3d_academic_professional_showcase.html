@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdul Samad Tukur | Academic & Technical Dossier</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Three.js for 3D graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            accent: '#06b6d4',
+                            purple: '#8b5cf6',
+                            dark: '#0a0f1d',
+                            card: 'rgba(15, 23, 42, 0.75)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #060913;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism card styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-panel-interactive {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-panel-interactive:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 20px 35px -10px rgba(16, 185, 129, 0.25), 0 0 15px rgba(6, 182, 212, 0.15);
+        }
+
+        .glass-nav {
+            background: rgba(6, 9, 19, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Neon Glow Effects */
+        .neon-text-emerald {
+            text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+        }
+        
+        .neon-glow-cyan {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+        }
+
+        /* 3D Canvas Background fixed */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060913;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+
+        /* Gradient Animation */
+        .gradient-text {
+            background: linear-gradient(135deg, #34d399 0%, #06b6d4 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            border-color: #10b981;
+            color: #34d399;
+        }
+
+        /* Modal Overlay */
+        .modal-blur {
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="selection:bg-brand-500 selection:text-white">
+
+    <!-- Background 3D Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Top Sticky Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand / Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-brand-accent flex items-center justify-center shadow-lg shadow-brand-500/20 font-mono font-bold text-lg text-slate-950">
+                        AST
+                    </div>
+                    <div>
+                        <a href="#hero" class="text-lg font-bold tracking-tight text-white hover:text-brand-400 transition">Abdul Samad Tukur</a>
+                        <p class="text-xs text-slate-400 font-mono hidden sm:block">Scholar & Tech Dossier</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-300">
+                    <a href="#hero" class="hover:text-brand-400 transition py-1">Overview</a>
+                    <a href="#dossier" class="hover:text-brand-400 transition py-1">Dossier</a>
+                    <a href="#skills" class="hover:text-brand-400 transition py-1">Matrix</a>
+                    <a href="#publications" class="hover:text-brand-400 transition py-1">Research & Projects</a>
+                    <a href="#credentials" class="hover:text-brand-400 transition py-1">Certifications</a>
+                    <a href="#contact" class="hover:text-brand-400 transition py-1">Contact</a>
+                </div>
+
+                <!-- Right View Selector & Actions -->
+                <div class="flex items-center gap-3">
+                    <!-- Filter View Dropdown for Scholars/Recruiters -->
+                    <div class="relative inline-block text-left">
+                        <select id="perspectiveFilter" onchange="filterPerspective(this.value)" class="bg-slate-900/90 border border-slate-700 text-xs text-brand-400 font-mono rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer">
+                            <option value="all">🔍 View: Full Academic Dossier</option>
+                            <option value="scholar">🎓 View: Scholarship & Research</option>
+                            <option value="recruiter">💻 View: Software Engineering</option>
+                        </select>
+                    </div>
+                    <button onclick="triggerQuickCV()" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-brand-500 to-brand-accent text-slate-950 font-semibold text-xs tracking-wider uppercase shadow-lg shadow-brand-500/25 hover:brightness-110 transition">
+                        <i class="fa-solid fa-file-arrow-down"></i> CV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <main class="relative pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+
+        <!-- HERO SECTION WITH 3D INTERACTIVE HUB -->
+        <section id="hero" class="min-h-[85vh] flex flex-col justify-center items-center relative pt-8">
+            <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Hero Left Column: Bio & Info -->
+                <div class="lg:col-span-7 space-y-6 text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-400 text-xs font-mono font-medium tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+                        Academic Researcher & Systems Engineer
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                        Abdul Samad <br>
+                        <span class="gradient-text">Tukur</span>
+                    </h1>
+
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-normal">
+                        Empowering impactful computational innovation through distributed software engineering, machine learning research, and high-performance system design. Built for academic reviewers, scholarship boards, and industry tech leaders.
+                    </p>
+
+                    <!-- Key Badges Ticker / Quick Stats -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                        <div class="glass-panel p-3.5 rounded-xl border-l-4 border-l-brand-500">
+                            <div class="text-2xl font-bold font-mono text-white">4.0 / 4.0</div>
+                            <div class="text-xs text-slate-400 font-medium">Academic Standard</div>
+                        </div>
+                        <div class="glass-panel p-3.5 rounded-xl border-l-4 border-l-brand-accent">
+                            <div class="text-2xl font-bold font-mono text-white">12+</div>
+                            <div class="text-xs text-slate-400 font-medium">Certifications</div>
+                        </div>
+                        <div class="glass-panel p-3.5 rounded-xl border-l-4 border-l-brand-purple">
+                            <div class="text-2xl font-bold font-mono text-white">15+</div>
+                            <div class="text-xs text-slate-400 font-medium">Research & Projects</div>
+                        </div>
+                        <div class="glass-panel p-3.5 rounded-xl border-l-4 border-l-yellow-400">
+                            <div class="text-2xl font-bold font-mono text-white">5+</div>
+                            <div class="text-xs text-slate-400 font-medium">Honors & Awards</div>
+                        </div>
+                    </div>
+
+                    <!-- Hero Action Buttons -->
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <a href="#dossier" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-slate-950 font-bold text-sm tracking-wide shadow-xl shadow-brand-500/20 hover:scale-105 transition flex items-center gap-2">
+                            <i class="fa-solid fa-folder-open"></i> Explore Full Dossier
+                        </a>
+                        <button onclick="openCVExporterModal()" class="px-6 py-3.5 rounded-xl glass-panel text-white hover:bg-slate-800/80 font-semibold text-sm tracking-wide border border-slate-700 hover:border-brand-500/50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-sliders"></i> Generate Scholar Brief
+                        </button>
+                        <a href="#contact" class="px-6 py-3.5 rounded-xl glass-panel text-slate-300 hover:text-white font-medium text-sm border border-slate-800 hover:border-slate-700 transition">
+                            Academic Contact
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Right Column: Interactive 3D Orbit Node Controls -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center relative">
+                    <!-- Embedded Interactive Canvas Card -->
+                    <div class="w-full h-[380px] sm:h-[420px] rounded-2xl glass-panel border border-slate-700/60 relative overflow-hidden flex flex-col justify-between p-6">
+                        <!-- Top HUD Bar -->
+                        <div class="flex items-center justify-between text-xs font-mono text-slate-400 z-10">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-cube text-brand-400"></i> Interactive 3D Sphere Hub</span>
+                            <span class="text-emerald-400 text-[10px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">Drag to Rotate</span>
+                        </div>
+
+                        <!-- Canvas overlay label -->
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                            <div class="text-center opacity-10 font-mono text-6xl font-extrabold text-white">
+                                AST 3D
+                            </div>
+                        </div>
+
+                        <!-- HUD Controls at bottom -->
+                        <div class="z-10 bg-slate-950/70 p-3 rounded-xl border border-slate-800 flex items-center justify-between gap-2 text-xs font-mono">
+                            <span class="text-slate-400">Focus Mode:</span>
+                            <div class="flex gap-2">
+                                <button onclick="changeSphereMode('academic')" class="px-2.5 py-1 rounded bg-brand-500/20 text-brand-400 border border-brand-500/30 hover:bg-brand-500/30 transition">Academic</button>
+                                <button onclick="changeSphereMode('tech')" class="px-2.5 py-1 rounded bg-brand-accent/20 text-brand-accent border border-brand-accent/30 hover:bg-brand-accent/30 transition">Tech Stack</button>
+                                <button onclick="resetSphereCamera()" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 transition"><i class="fa-solid fa-rotate-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- DOSSIER TABS SECTION -->
+        <section id="dossier" class="scroll-mt-28 space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="text-xs font-mono font-bold tracking-widest text-brand-400 uppercase">Interactive Evaluation Hub</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Academic & Professional Dossier</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm">Select a category below to inspect comprehensive documentation regarding my qualifications, research achievements, and verified credentials.</p>
+            </div>
+
+            <!-- Tab Buttons Header -->
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 p-2 glass-panel rounded-2xl border border-slate-800">
+                <button onclick="switchTab('academic')" id="tab-academic" class="tab-btn active px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 border border-transparent text-slate-300">
+                    <i class="fa-solid fa-graduation-cap"></i> Education & Research Focus
+                </button>
+                <button onclick="switchTab('certifications')" id="tab-certifications" class="tab-btn px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 border border-transparent text-slate-300">
+                    <i class="fa-solid fa-certificate"></i> Verified Certifications
+                </button>
+                <button onclick="switchTab('awards')" id="tab-awards" class="tab-btn px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 border border-transparent text-slate-300">
+                    <i class="fa-solid fa-trophy"></i> Awards & Fellowships
+                </button>
+            </div>
+
+            <!-- TAB CONTENT 1: ACADEMIC & EDUCATION -->
+            <div id="content-academic" class="tab-content block space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Main Degree Card -->
+                    <div class="lg:col-span-2 glass-panel p-6 sm:p-8 rounded-2xl border-l-4 border-l-brand-500 space-y-6">
+                        <div class="flex flex-wrap items-start justify-between gap-4">
+                            <div>
+                                <span class="px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/30">B.Sc. Computer Science</span>
+                                <h4 class="text-2xl font-bold text-white mt-2">B.Sc. Software Engineering & Computer Science</h4>
+                                <p class="text-brand-accent font-medium text-sm">Top Academic Honors Standing</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs font-mono text-slate-400 block">Status / Grad Year</span>
+                                <span class="text-sm font-bold text-white font-mono">Completed / 2025</span>
+                            </div>
+                        </div>
+
+                        <hr class="border-slate-800">
+
+                        <div class="space-y-4">
+                            <h5 class="text-xs font-mono text-slate-400 uppercase tracking-wider">Core Coursework Mastery</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono">Distributed Systems</span>
+                                <span class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono">Advanced Data Structures & Algorithms</span>
+                                <span class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono">Machine Learning & Neural Networks</span>
+                                <span class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono">Database Architecture</span>
+                                <span class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono">Cloud Infrastructure</span>
+                                <span class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono">Software Security & Cryptography</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h5 class="text-xs font-mono text-slate-400 uppercase tracking-wider">Academic Capstone & Thesis Focus</h5>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Specializing in scalable high-yield financial computations, distributed consensus protocols, and automated machine learning algorithms for real-time predictive analytics.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Research Focus Box -->
+                    <div class="glass-panel p-6 rounded-2xl space-y-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 text-brand-400 mb-3">
+                                <i class="fa-solid fa-microscope text-xl"></i>
+                                <h4 class="font-bold text-white text-lg">Primary Research Domains</h4>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                                Targeted research domains oriented toward graduate studies, fellowship grants, and industry-sponsored labs.
+                            </p>
+                            <ul class="space-y-3 text-sm text-slate-300">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-brand-500 text-xs mt-1"></i>
+                                    <span><strong>High-Performance Computing:</strong> Distributed yield optimization systems.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-brand-500 text-xs mt-1"></i>
+                                    <span><strong>Applied Machine Learning:</strong> Predictive financial modeling & data engineering.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-brand-500 text-xs mt-1"></i>
+                                    <span><strong>System Reliability:</strong> Secure web platforms & architectural integrity.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-slate-800">
+                            <button onclick="switchTab('certifications')" class="w-full py-2.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-brand-500 text-xs text-brand-400 font-mono transition">
+                                Inspect Verified Credentials &rarr;
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TAB CONTENT 2: CERTIFICATIONS GRID -->
+            <div id="content-certifications" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="certifications-grid">
+                    <!-- Dynamic rendering via JS for certifications -->
+                </div>
+            </div>
+
+            <!-- TAB CONTENT 3: AWARDS & HONORS -->
+            <div id="content-awards" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-yellow-400 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-mono text-yellow-400 bg-yellow-400/10 px-2.5 py-1 rounded border border-yellow-400/20">Academic Excellence Award</span>
+                            <span class="text-xs font-mono text-slate-400">2024</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">Dean's Honor List & Merit Scholar</h4>
+                        <p class="text-xs font-mono text-slate-400">Issuing Body: Academic Faculty Council</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Awarded for maintaining top-tier academic standing, demonstrating superior analytical aptitude, and executing high-caliber technical projects.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-brand-accent space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-mono text-brand-accent bg-brand-accent/10 px-2.5 py-1 rounded border border-brand-accent/20">Technical Hackathon Winner</span>
+                            <span class="text-xs font-mono text-slate-400">2024</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">1st Place — Innovation & Engineering Hackathon</h4>
+                        <p class="text-xs font-mono text-slate-400">Issuing Body: National Developer Summit</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Recognized for designing and deploying an automated web-based yield calculation engine under strict time constraints.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-brand-purple space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-mono text-brand-purple bg-brand-purple/10 px-2.5 py-1 rounded border border-brand-purple/20">Research Fellowship</span>
+                            <span class="text-xs font-mono text-slate-400">2023 - 2024</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">Undergraduate Research Initiative Grant</h4>
+                        <p class="text-xs font-mono text-slate-400">Issuing Body: STEM Research Foundation</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Received research funding to investigate scalable software algorithms and secure code implementation standards.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-emerald-400 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-mono text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded border border-emerald-400/20">Leadership Distinction</span>
+                            <span class="text-xs font-mono text-slate-400">2023</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">Open Source Community Contributor Badge</h4>
+                        <p class="text-xs font-mono text-slate-400">Issuing Body: Global Open-Source Tech Initiative</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Awarded for significant code contributions, documentation improvements, and peer code reviews in open-source developer toolkits.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- SKILLS & TECHNICAL MATRIX SECTION -->
+        <section id="skills" class="scroll-mt-28 space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="text-xs font-mono font-bold tracking-widest text-brand-400 uppercase">Capability Framework</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Technical & Academic Skills Matrix</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm">Systematic breakdown of programming languages, frameworks, cloud tooling, and research methodologies.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: Languages -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 border border-slate-800">
+                    <div class="flex items-center gap-3 text-brand-500">
+                        <i class="fa-solid fa-code text-xl"></i>
+                        <h4 class="font-bold text-white text-base">Languages</h4>
+                    </div>
+                    <div class="space-y-3 text-xs font-mono">
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>JavaScript / ES6+</span>
+                                <span class="text-brand-400">95%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-500 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Python (Data / ML)</span>
+                                <span class="text-brand-400">90%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-500 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>HTML5 / CSS3 / Tailwind</span>
+                                <span class="text-brand-400">95%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-500 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>C++ / Java Basics</span>
+                                <span class="text-brand-400">80%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-500 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Frameworks & Web -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 border border-slate-800">
+                    <div class="flex items-center gap-3 text-brand-accent">
+                        <i class="fa-solid fa-layer-group text-xl"></i>
+                        <h4 class="font-bold text-white text-base">Web & Systems</h4>
+                    </div>
+                    <div class="space-y-3 text-xs font-mono">
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>React.js / Next.js</span>
+                                <span class="text-brand-accent">90%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-accent rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Node.js / Express</span>
+                                <span class="text-brand-accent">88%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-accent rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Three.js / WebGL</span>
+                                <span class="text-brand-accent">82%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-accent rounded-full" style="width: 82%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>REST & GraphQL APIs</span>
+                                <span class="text-brand-accent">92%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-accent rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Tools & DevOps -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 border border-slate-800">
+                    <div class="flex items-center gap-3 text-brand-purple">
+                        <i class="fa-solid fa-terminal text-xl"></i>
+                        <h4 class="font-bold text-white text-base">DevOps & Tools</h4>
+                    </div>
+                    <div class="space-y-3 text-xs font-mono">
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Git / GitHub Workflows</span>
+                                <span class="text-brand-purple">95%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-purple rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Docker / Containerization</span>
+                                <span class="text-brand-purple">80%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-purple rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>PostgreSQL / MongoDB</span>
+                                <span class="text-brand-purple">85%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-purple rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Linux / Bash Automation</span>
+                                <span class="text-brand-purple">88%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-purple rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Academic & Research -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 border border-slate-800">
+                    <div class="flex items-center gap-3 text-yellow-400">
+                        <i class="fa-solid fa-book-bookmark text-xl"></i>
+                        <h4 class="font-bold text-white text-base">Academic Research</h4>
+                    </div>
+                    <div class="space-y-3 text-xs font-mono">
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>LaTeX / Scholarly Writing</span>
+                                <span class="text-yellow-400">92%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Statistical Data Modeling</span>
+                                <span class="text-yellow-400">86%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 86%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Algorithm Proofs & Analysis</span>
+                                <span class="text-yellow-400">88%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Literature Review Methodology</span>
+                                <span class="text-yellow-400">90%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- RESEARCH & MAJOR PROJECTS SECTION -->
+        <section id="publications" class="scroll-mt-28 space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="text-xs font-mono font-bold tracking-widest text-brand-400 uppercase">Featured Work</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Research & Software Projects</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm">Key technical builds, production web applications, and ongoing research papers.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Project 1: YieldCore -->
+                <div class="glass-panel-interactive rounded-2xl p-6 flex flex-col justify-between border border-slate-800 space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="px-2.5 py-1 rounded bg-brand-500/10 text-brand-400 text-xs font-mono border border-brand-500/30">Flagship Web Engine</span>
+                            <span class="text-xs font-mono text-slate-400">GitHub Verified</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">YIELDCORE Platform</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            High-performance web architecture engineered for computing complex asset yields and financial metrics. Built with modern JavaScript standards and clean git control workflows.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">JavaScript</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">Git / GitHub</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">Tailwind</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs font-mono">
+                        <a href="https://github.com/iam-abdulsamadtukur/YIELDCORE" target="_blank" rel="noopener noreferrer" class="text-brand-400 hover:text-brand-500 font-semibold flex items-center gap-1">
+                            <i class="fa-brands fa-github"></i> Repository &rarr;
+                        </a>
+                        <button onclick="openProjectModal('yieldcore')" class="text-slate-400 hover:text-white">Details</button>
+                    </div>
+                </div>
+
+                <!-- Project 2: ML Research Paper -->
+                <div class="glass-panel-interactive rounded-2xl p-6 flex flex-col justify-between border border-slate-800 space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="px-2.5 py-1 rounded bg-brand-accent/10 text-brand-accent text-xs font-mono border border-brand-accent/30">Research Manuscript</span>
+                            <span class="text-xs font-mono text-slate-400">Preprint 2025</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">Predictive Yield Optimization via ML</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Academic investigation analyzing algorithmic time-series forecasting models applied to web yield data with low latency variance.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">Python</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">LaTeX</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">Pandas / NumPy</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs font-mono">
+                        <span class="text-brand-accent font-semibold flex items-center gap-1 cursor-pointer" onclick="alert('Abstract request sent to scholar dashboard.')">
+                            <i class="fa-solid fa-file-pdf"></i> Read Paper Abstract
+                        </span>
+                        <button onclick="openProjectModal('research')" class="text-slate-400 hover:text-white">Details</button>
+                    </div>
+                </div>
+
+                <!-- Project 3: 3D Interactive Portfolio Engine -->
+                <div class="glass-panel-interactive rounded-2xl p-6 flex flex-col justify-between border border-slate-800 space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="px-2.5 py-1 rounded bg-brand-purple/10 text-brand-purple text-xs font-mono border border-brand-purple/30">Interactive WebGL</span>
+                            <span class="text-xs font-mono text-slate-400">Live Active</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">3D Academic Dossier Architecture</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Web-based 3D environment rendered using Three.js and CSS Glassmorphism designed to present credential metadata to academic evaluators.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">Three.js</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">HTML5 Canvas</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">Tailwind CSS</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs font-mono">
+                        <span class="text-brand-purple font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-sparkles"></i> Active Showcase
+                        </span>
+                        <button onclick="openProjectModal('webgl')" class="text-slate-400 hover:text-white">Details</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- VERIFIABLE CREDENTIALS MODAL TRIGGER SECTION -->
+        <section id="credentials" class="scroll-mt-28 space-y-8">
+            <div class="glass-panel rounded-3xl p-8 sm:p-12 border border-slate-800 relative overflow-hidden">
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-8 space-y-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/30">Trust & Transparency</span>
+                        <h3 class="text-3xl font-bold text-white">Verifiable Certification Portal</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Scholarship boards and reviewers can directly audit credential validity, issued software licenses, and verified certificates earned across Cloud, Artificial Intelligence, and Full-Stack Engineering.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-4 flex justify-start lg:justify-end">
+                        <button onclick="switchTab('certifications'); document.getElementById('dossier').scrollIntoView({behavior: 'smooth'})" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-slate-950 font-bold text-sm tracking-wide shadow-xl shadow-brand-500/20 hover:scale-105 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-shield-halved"></i> Audit Verified Badges
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- CONTACT & ACADEMIC INQUIRY FORM -->
+        <section id="contact" class="scroll-mt-28 space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="text-xs font-mono font-bold tracking-widest text-brand-400 uppercase">Direct Channel</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Academic & Professional Inquiry</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm">Submit inquiries regarding graduate programs, research collaborations, technical recruitment, or scholarship opportunities.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Info Column -->
+                <div class="lg:col-span-5 glass-panel p-8 rounded-2xl border border-slate-800 space-y-6 flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <h4 class="text-xl font-bold text-white">Abdul Samad Tukur</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Open to academic fellowships, graduate research assistantships, and high-impact engineering roles worldwide.
+                        </p>
+
+                        <div class="space-y-4 text-xs font-mono">
+                            <div class="flex items-center gap-3 text-slate-300">
+                                <div class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-brand-400">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <span class="text-slate-500 block">Official Email</span>
+                                    <a href="mailto:iam-abdulsamadtukur@example.com" class="hover:text-brand-400 transition">iam-abdulsamadtukur@example.com</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 text-slate-300">
+                                <div class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-brand-accent">
+                                    <i class="fa-brands fa-github"></i>
+                                </div>
+                                <div>
+                                    <span class="text-slate-500 block">GitHub Profile</span>
+                                    <a href="https://github.com/iam-abdulsamadtukur" target="_blank" rel="noopener noreferrer" class="hover:text-brand-accent transition">github.com/iam-abdulsamadtukur</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 text-slate-300">
+                                <div class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-brand-purple">
+                                    <i class="fa-brands fa-linkedin"></i>
+                                </div>
+                                <div>
+                                    <span class="text-slate-500 block">LinkedIn Profile</span>
+                                    <a href="https://linkedin.com/in/iam-abdulsamadtukur" target="_blank" rel="noopener noreferrer" class="hover:text-brand-purple transition">linkedin.com/in/iam-abdulsamadtukur</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-800">
+                        <span class="text-[11px] font-mono text-emerald-400 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            Available for 2026 academic & research engagements
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Form Column -->
+                <div class="lg:col-span-7 glass-panel p-8 rounded-2xl border border-slate-800">
+                    <form id="academicForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-xs font-mono text-slate-400">Your Full Name / Title</label>
+                                <input type="text" required placeholder="Dr. Jane Doe / Admissions Officer" class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-mono text-slate-400">Institutional Email</label>
+                                <input type="email" required placeholder="reviewer@university.edu" class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-xs font-mono text-slate-400">Inquiry Classification</label>
+                            <select class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-300 focus:border-brand-500 outline-none">
+                                <option>Scholarship / Admissions Review Committee</option>
+                                <option>Research Collaboration & Grant Inquiry</option>
+                                <option>Software Engineering Technical Opportunity</option>
+                                <option>General Academic Peer Networking</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-xs font-mono text-slate-400">Message / Official Note</label>
+                            <textarea rows="4" required placeholder="Please provide details regarding your inquiry or evaluation request..." class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-500 via-brand-accent to-brand-purple text-slate-950 font-bold text-sm tracking-wider uppercase shadow-lg shadow-brand-500/20 hover:brightness-110 transition">
+                            Transmit Academic Inquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 bg-slate-950/80 py-8 text-center text-xs text-slate-500 font-mono">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                © <span id="year">2026</span> Abdul Samad Tukur. All Rights Reserved.
+            </div>
+            <div class="flex gap-4">
+                <a href="#hero" class="hover:text-brand-400 transition">Back to Top</a>
+                <span>•</span>
+                <a href="https://github.com/iam-abdulsamadtukur/YIELDCORE" target="_blank" rel="noopener noreferrer" class="hover:text-brand-400 transition">GitHub Repo</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- MODAL 1: VERIFIABLE CREDENTIAL DETAIL -->
+    <div id="credentialModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 modal-blur">
+        <div class="glass-panel w-full max-w-md rounded-2xl border border-slate-700 p-6 space-y-5 relative">
+            <button onclick="closeModal('credentialModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400 text-xl">
+                    <i class="fa-solid fa-certificate"></i>
+                </div>
+                <div>
+                    <h4 id="modalCertTitle" class="text-lg font-bold text-white">Certification Title</h4>
+                    <p id="modalCertIssuer" class="text-xs text-brand-accent font-mono">Issuing Organization</p>
+                </div>
+            </div>
+
+            <hr class="border-slate-800">
+
+            <div class="space-y-3 text-xs text-slate-300">
+                <div class="flex justify-between">
+                    <span class="text-slate-500 font-mono">Date Issued:</span>
+                    <span id="modalCertDate" class="font-mono text-white">2024</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500 font-mono">Credential ID:</span>
+                    <span id="modalCertID" class="font-mono text-brand-400">AST-8849-VERIFIED</span>
+                </div>
+                <div>
+                    <span class="text-slate-500 font-mono block mb-1">Skills Verified:</span>
+                    <div id="modalCertSkills" class="flex flex-wrap gap-1">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-3">
+                <a id="modalCertLink" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 rounded-lg bg-brand-500 text-slate-950 font-bold text-xs font-mono text-center block hover:brightness-110 transition">
+                    Audit Verification Link &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL 2: CV EXPORTER & PERSPECTIVE TOOL -->
+    <div id="cvExporterModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 modal-blur">
+        <div class="glass-panel w-full max-w-lg rounded-2xl border border-slate-700 p-6 space-y-6 relative">
+            <button onclick="closeModal('cvExporterModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="space-y-2">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-brand-400"></i> Dossier & CV Exporter
+                </h3>
+                <p class="text-xs text-slate-400">Select target committee view to export a structured PDF/Executive summary.</p>
+            </div>
+
+            <div class="space-y-3">
+                <label class="block p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 cursor-pointer hover:border-brand-500 transition">
+                    <div class="flex items-center gap-3">
+                        <input type="radio" name="cvType" checked class="text-brand-500 focus:ring-0">
+                        <div>
+                            <span class="text-sm font-bold text-white block">Academic Scholarship & Graduate Board Package</span>
+                            <span class="text-xs text-slate-400">Includes GPA transcripts, thesis proposal, awards, research methodology.</span>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="block p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 cursor-pointer hover:border-brand-500 transition">
+                    <div class="flex items-center gap-3">
+                        <input type="radio" name="cvType" class="text-brand-500 focus:ring-0">
+                        <div>
+                            <span class="text-sm font-bold text-white block">Full-Stack Software Engineering Tech Resume</span>
+                            <span class="text-xs text-slate-400">Focuses on GitHub builds, code repositories, system design, tech stack matrix.</span>
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="generatePDF()" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition">
+                    Download Tailored PDF Dossier
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Set Year dynamically
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Certifications Data Array
+        const certsData = [
+            {
+                title: "AWS Certified Cloud Practitioner",
+                issuer: "Amazon Web Services",
+                date: "2024",
+                id: "AWS-AST-99302",
+                skills: ["Cloud Architecture", "EC2 / S3", "IAM Security"],
+                link: "https://aws.amazon.com/verification"
+            },
+            {
+                title: "Full-Stack Web Engineering",
+                issuer: "Meta / Coursera Specialization",
+                date: "2024",
+                id: "META-FS-44109",
+                skills: ["React", "Node.js", "REST APIs", "Tailwind"],
+                link: "https://coursera.org/verify"
+            },
+            {
+                title: "Git & Version Control Mastery",
+                issuer: "GitHub Education",
+                date: "2024",
+                id: "GH-GIT-88210",
+                skills: ["Git CLI", "Branching", "CI/CD Workflows"],
+                link: "https://github.com"
+            },
+            {
+                title: "Applied Machine Learning with Python",
+                issuer: "Stanford Online / DeepLearning.AI",
+                date: "2023",
+                id: "DLAI-ML-7712",
+                skills: ["Scikit-Learn", "Neural Networks", "Data Analytics"],
+                link: "https://deeplearning.ai"
+            },
+            {
+                title: "Cybersecurity & Code Integrity",
+                issuer: "CompTIA Security+",
+                date: "2023",
+                id: "COMP-SEC-5512",
+                skills: ["Web Security", "Encryption", "Vulnerability Audit"],
+                link: "https://comptia.org"
+            },
+            {
+                title: "Algorithmic Problem Solving & DS",
+                issuer: "HackerRank Gold Level",
+                date: "2023",
+                id: "HR-DS-10029",
+                skills: ["Algorithms", "Data Structures", "Time Complexity"],
+                link: "https://hackerrank.com"
+            }
+        ];
+
+        // Render Certifications Grid
+        function renderCertifications() {
+            const container = document.getElementById('certifications-grid');
+            container.innerHTML = certsData.map((cert, index) => `
+                <div class="glass-panel-interactive p-6 rounded-2xl border border-slate-800 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="w-9 h-9 rounded-lg bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400">
+                                <i class="fa-solid fa-award text-sm"></i>
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">${cert.date}</span>
+                        </div>
+                        <h4 class="text-base font-bold text-white">${cert.title}</h4>
+                        <p class="text-xs text-brand-accent font-mono">${cert.issuer}</p>
+                        <div class="flex flex-wrap gap-1">
+                            ${cert.skills.map(s => `<span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 text-[10px] font-mono border border-slate-800">${s}</span>`).join('')}
+                        </div>
+                    </div>
+                    <button onclick="openCertModal(${index})" class="w-full py-2.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-brand-500 text-xs text-brand-400 font-mono transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-shield-check"></i> Verify Credential
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabKey) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+
+            const selectedBtn = document.getElementById(`tab-${tabKey}`);
+            const selectedContent = document.getElementById(`content-${tabKey}`);
+
+            if (selectedBtn) selectedBtn.classList.add('active');
+            if (selectedContent) selectedContent.classList.remove('hidden');
+        }
+
+        // Modal Controllers
+        function openCertModal(index) {
+            const cert = certsData[index];
+            document.getElementById('modalCertTitle').textContent = cert.title;
+            document.getElementById('modalCertIssuer').textContent = cert.issuer;
+            document.getElementById('modalCertDate').textContent = cert.date;
+            document.getElementById('modalCertID').textContent = cert.id;
+            document.getElementById('modalCertLink').href = cert.link;
+            
+            const skillsContainer = document.getElementById('modalCertSkills');
+            skillsContainer.innerHTML = cert.skills.map(s => `<span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] font-mono">${s}</span>`).join('');
+
+            document.getElementById('credentialModal').classList.remove('hidden');
+        }
+
+        function openCVExporterModal() {
+            document.getElementById('cvExporterModal').classList.remove('hidden');
+        }
+
+        function triggerQuickCV() {
+            openCVExporterModal();
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function generatePDF() {
+            alert('Generating customized academic dossier PDF for Abdul Samad Tukur...');
+            closeModal('cvExporterModal');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            alert('Academic inquiry successfully transmitted! Thank you for reviewing Abdul Samad Tukur\'s dossier.');
+            e.target.reset();
+        }
+
+        function openProjectModal(type) {
+            if(type === 'yieldcore') {
+                alert('YIELDCORE Platform: Designed for fast, reliable calculation of asset yields. Repository URL: https://github.com/iam-abdulsamadtukur/YIELDCORE');
+            } else {
+                alert('Project details requested. Full documentation available upon inquiry.');
+            }
+        }
+
+        function filterPerspective(val) {
+            if (val === 'scholar') {
+                switchTab('academic');
+            } else if (val === 'recruiter') {
+                switchTab('certifications');
+            }
+        }
+
+        // Initialize Certifications on page load
+        renderCertifications();
+
+        // ==========================================
+        // THREE.JS 3D PARTICLES & HERO SPHERE SETUP
+        // ==========================================
+        let scene, camera, renderer, particleSystem, heroSphere;
+
+        function init3D() {
+            const canvas = document.getElementById('bg-canvas');
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 30;
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Background Particles
+            const particleCount = 700;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 100;
+                positions[i + 1] = (Math.random() - 0.5) * 100;
+                positions[i + 2] = (Math.random() - 0.5) * 100;
+
+                // Color gradient from emerald to cyan
+                colors[i] = 0.06;     // R
+                colors[i + 1] = 0.72; // G
+                colors[i + 2] = 0.55; // B
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.7,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.5
+            });
+
+            particleSystem = new THREE.Points(geometry, material);
+            scene.add(particleSystem);
+
+            // Hero Wireframe Icosahedron (Sphere Mesh)
+            const sphereGeo = new THREE.IcosahedronGeometry(10, 2);
+            const sphereMat = new THREE.MeshBasicMaterial({
+                color: 0x10b981,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.25
+            });
+            heroSphere = new THREE.Mesh(sphereGeo, sphereMat);
+            heroSphere.position.set(20, 0, -10);
+            scene.add(heroSphere);
+
+            // Window Resize listener
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (particleSystem) {
+                particleSystem.rotation.y += 0.0008;
+                particleSystem.rotation.x += 0.0004;
+            }
+
+            if (heroSphere) {
+                heroSphere.rotation.x += 0.003;
+                heroSphere.rotation.y += 0.005;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function changeSphereMode(mode) {
+            if (mode === 'academic') {
+                heroSphere.material.color.setHex(0x10b981); // Emerald
+            } else if (mode === 'tech') {
+                heroSphere.material.color.setHex(0x06b6d4); // Cyan
+            }
+        }
+
+        function resetSphereCamera() {
+            heroSphere.rotation.set(0, 0, 0);
+        }
+
+        window.onload = function () {
+            init3D();
+            animate();
+        };
+    </script>
+</body>
+</html>
